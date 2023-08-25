@@ -1,0 +1,16 @@
+.idea/
+.vscode/
+
+node_modules/
+.wrangler/
+
+.editorconfig
+.prettierrc
+
+package-lock.json
+package.json
+tsconfig.json
+
+api-tests/
+.dev.vars
+variables.sh
