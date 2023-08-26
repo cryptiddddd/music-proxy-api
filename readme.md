@@ -4,7 +4,9 @@
 
 read-only access to generic song data.
 
-documentation in progress... working on user-friendly docs on wormboy3.
+a user must have a spotify account to use this service. they may register at "/register", and authenticate with spotify. then they may use my various endpoints !
+
+documentation in progress... working on user-friendly docs.
 
 ## notes to self
 
@@ -13,4 +15,4 @@ iiii think that my routing is great! i like the organization. i'm gonna add the 
 - i want a more uniform way of intercepting and handling errors! is there a universal error handler i could come up with??
 - all the spotify api calls so far are pretty uniform [validate parameters, grab user access key, call the specific function, and then format the data.]
     - how could i generalize or streamline this process? spotify's parameters tend to be pretty cookie-cutter, there's a consistency to them between name and valid values...
-    - is this something that i could redesign to be objet-oriented, now that i understand more about the authentication flow?
+    - is this something that i could redesign to be object-oriented, now that i understand more about the authentication flow?

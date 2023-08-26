@@ -37,14 +37,14 @@ router.get("/", (request: TrueRequest, env: Env, ctx: ExecutionContext) => {
 
 	return Response.json({
 		status: 200,
-		message: "welcome to wormboy 3's music proxy api. there is nothing here on this root page! for documentation, see '/docs'."
+		message: "welcome to wormboy 3's music proxy api. there is nothing here on this root page! documentation coming soon..."
 	});
 });
 
-router.get("/docs", () => {
-	// redirect to documentation on wormboy3
-	return Response.redirect("https://wormboy3.neocities.org/docs/music-proxy"); 
-});
+// router.get("/docs", () => {
+// 	// redirect to documentation on wormboy3
+// 	return Response.redirect("https://wormboy3.neocities.org/docs/music-proxy"); 
+// });
 
 router.get("/privacy-policy", () => {
 	let body = "wormboy's music api collects no personal information. wormboy does not care about your personal information. there is a database that stores anonymous tokens to access your spotify account, associated only with the date and time of your registration, and the randomized id you receive upon registration confirmation.\n\nthis api will never ask permission or attempt to create or edit spotify account data [playlists, account safety, everything in between]; it is exclusively a means to read data, and will remain that way. that said: use at your own risk, as anyone with your user id can view your recently played tracks, and top artists/tracks.";
