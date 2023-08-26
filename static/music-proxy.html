@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>documentation for worm's music api!</title>
+
+    <!-- preview meta -->
+    <meta property="description" content="documentation for wormboy's music proxy api.">
+    <meta property="og:site_name" content="wormboy's apis">
+    <meta property="author" content="wormboy">
+	
+    <!-- google font[s] -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+    <!-- my links -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- highlightjs -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+
+    <!-- theme for highlightjs -->
+    <link rel="stylesheet" href="../assets/css/yukaii-dark-dimmed.css">
+</head>
+<body onload="hljs.highlightAll();">
+    <marquee behavior="alternate" direction="right">
+        <p>display your statistically-favorite artists and tracks.  &mdash;&mdash;  clean, read-only access.  &mdash;&mdash;  intended for neocities & other static site hosts.</p>
+    </marquee>
+
+    <!-- main container -->
+    <main class="container">
+        <section>
+            <a href="../index.html">⟵ return to wormboy3</a>
+            <h1>wormboy3 presents: my music api's documentation</h1>
+            
+            <p>this page documents wormboy's music api: what it is, how to use it, and how it works.</p>
+            <ul id="toc">
+                <li><a href="#what-is-this">explanation</a></li>
+                <li>
+                    <a href="#how-to-use">how to use</a>
+                    <ul>
+                        <li><a href="#setup">setup</a></li>
+                        <li><a href="#endpoints">api endpoints</a></li>
+                        <li><a href="#data-reference">data reference</a></li>
+                    </ul>
+                </li>
+                <li><a href="#known-issues">known issues</a></li>
+                <li><a href="#examples">code examples</a></li>
+                <li><a href="#read-more">more links</a></li>
+            </ul>
+        </section>
+        
+        <section class="doc-section" id="what-is-this">
+            <h2>what is this?</h2>
+            <img src="../assets/images/wormboy_music_api_diagram.png" alt="a diagram of the user, the wormboy api, and spotify." id="auth-flow-diagram">
+            <p class="caption">you authorize my api to access your data with spotify.</p>
+            <p>briefly put: this is a site that you, the user, can interface with in order to access data from spotify: your top artists and songs [according to spotify], your most recently played songs [on spotify], and your playlists. you, as a webmaster, may take this data and arrange it as you desire for your webpage.</p>
+            <p>it's similar to volt.fm, only with less statistics and more customizability!</p>
+            <p>on static sites, there is no protecting the code that is your site: it is all available for anyone to see. while i cannot change that, i can provide you with cleaned read-only to access your spotify data. again, i cannot stop others from grabbing your id and displaying your data on their page. but! this api exposes no personal or identifying data, and anyone who would do that is probably a loser.</p>
+
+            <p class="note">for my privacy policy, click <a href="https://music.wormboy-api.workers.dev/privacy-policy">here</a>.</p>
+            <p class="note">for an example, see <a href="../about.html">my about page</a>.</p>
+        </section>
+
+        <section class="doc-section" id="how-to-use">
+            <h2>how do i use it?</h2>
+            <p>wormboy's music api is a RESTful api service. you access data by making http requests to various urls with your specified parameters.</p>
+            <p class="note">for more information on RESTful apis, click <a href="https://www.freecodecamp.org/news/how-to-use-rest-api/">here</a>.</p>
+            <p>this section contains three subsections: <a href="#setup">setup</a>,
+            <a href="#endpoints">endpoint references</a>, and <a href="#data-reference">data references</a>.</p>
+        </section>
+
+        <section class="doc-section">
+            <h3>setup</h3>
+            <div class="indented">
+                <section>
+                    <p class="note">important note: spotify authorization is <em>not required</em> to use this api. it is only required to use the <a href="#spotify-top">top artists/tracks endpoint</a> and the <a href="#spotify-recent">recently played endpoint</a>.</p>
+                    
+                    <p>registration should be a simple flow:</p>
+                    <ol>
+                        <li><a href="https://music.wormboy-api.workers.dev/register">this page</a> will redirect you to spotify's authentication page. it will display what data scopes the api will access.</li>
+                        <li>if you accept, you will be redirected to a registration confirmation message.</li>
+                        <li>find your id, and copy-paste it somewhere for safe keeping.</li>
+                    </ol>
+                    <p>for example:</p>
+                    <pre><code class="language-javascript">
+{
+    "status": 200,
+    "message": "authorized. see data for your new id.",
+    "data": {"id":"your-ID-here-long-jumbled-mess-of-numbers-and-letters"}
+}
+                    </code></pre>
+                    <p>within this scary line of text, your id is <code>your-ID-here-long-jumbled-mess-of-numbers-and-letters</code>.</p>
+                    <p>that is all for setup, you are now ready to use this api. see <a href="#examples">here</a> for example code, including a fill-in-the-blank javascript file.</p>
+                    <p class="note">if you ever with to de-authorize this api, visit <a href="https://www.spotify.com/us/account/apps/">your spotify account page</a>, find "wormboy's music api", and hit "remove access".</p>
+                </section>
+            </div>
+        </section>
+
+        <section class="doc-section" id="endpoints">
+            <h3>endpoints</h3>
+
+            <div class="indented">
+                <section>
+                    <p>first, a little bit about endpoints:</p>
+                    <p>each endpoint has <em>parameters</em> [required] and <em>queries</em> [not required]. a parameter will be noted in curly braces where they belong in the url. queries may be added to the end of the url as a query string, [like so: <span class="endpoint-url">/api/endpoint?query_name=quer_value&other_query=other_value</span>]</p>
+                    <p class="note">for more about url query strings, <a href="https://en.wikipedia.org/wiki/Query_string">see here</a>.</p>
+                </section>
+                <section class="endpoint">
+                    <h4><span class="method">get</span> <span class="endpoint-url">/api/</span></h4>
+                
+                    <p>base endpoint, all endpoints begin with <span class="endpoint-url">/api/</span>, however there is nothing here.</p>
+                    <div>
+                        <h6>responses:</h6>
+                        <ul>
+                            <li><span class="status-code">404</span>: not found.</li>
+                        </ul>
+                    </div>
+                </section>
+                <section class="endpoint" id="spotify-top">
+                    <h4><span class="method">get</span> <span class="endpoint-url">/api/{userID}/top/{type}</span></h4>
+                    <p>gets your top artists or tracks on spotify. you may include optional queries for further specificity.</p>
+                    <div>
+                        <h6>parameters:</h6>
+                        <ul>
+                            <li><code class="variable-name">userID</code>: your unique user id received upon registration.</li>
+                            <li><code class="variable-name">type</code>: <code>tracks</code> or <code>artists</code> only.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h6>queries:</h6>
+                        <ul>
+                            <li>
+                                <code class="variable-name">time_range</code>: <code>short_term</code>, <code>medium_term</code>, or <code>long_term</code>; must match exactly.
+                                <p class="default-value"><code>medium_term</code></p>
+                            </li>
+                            <li>
+                                <code class="variable-name">limit</code>: 0 - 50.
+                                <p class="default-value"><code>10</code></p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h6>responses:</h6>
+                        <ul>
+                            <li><span class="status-code">200</span>: success. see response's "data" field for data.</li>
+                            <li><span class="status-code">400</span>: bad request, in the case of invalid parameter/query value.</li>
+                            <li><span class="status-code">401</span>: bad or invalid user id.</li>
+                        </ul>
+                    </div>
+                </section>
+                <section class="endpoint" id="spotify-recent">
+                    <h4><span class="method">get</span> <span class="endpoint-url">/api/{userID}/recently-played</span></h4>
+                    <p>gets your most recently played tracks from spotify. you may include an optional query to specify how many tracks you'd like.</p>
+                    <div>
+                        <h6>parameters:</h6>
+                        <ul>
+                            <li><code class="variable-name">userID</code>: your unique user id.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h6>queries:</h6>
+                        <ul>
+                            <li>
+                                <code class="variable-name">limit</code>: 0 - 50.
+                                <p class="default-value"><code>10</code></p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h6>responses:</h6>
+                        <ul>
+                            <li><span class="status-code">200</span>: success. see response's "data" field for data.</li>
+                            <li><span class="status-code">400</span>: bad request, in the case of invalid parameter/query value.</li>
+                            <li><span class="status-code">401</span>: bad or invalid user id.</li>
+                        </ul>
+                    </div>
+                </section>
+                <section class="endpoint" id="api-playlist">
+                    <h4><span class="method">get</span> <span class="endpoint-url">/api/playlist/{playlistID}</span></h4>
+                    <p>gets data on the given playlist and a limited number of tracks from the playlist.</p>
+                    <div>
+                        <h6>parameters:</h6>
+                        <ul>
+                            <li><code class="variable-name">playlistID</code>: the playlist's id. [how do i get that id?]</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h6>queries:</h6>
+                        <ul>
+                            <li>
+                                <code class="variable-name">limit</code>: 0 - 50.
+                                <p class="default-value"><code>10</code></p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h6>responses:</h6>
+                        <ul>
+                            <li><span class="status-code">200</span>: success. see response's "data" field for data.</li>
+                            <li><span class="status-code">400</span>: bad request, in the case of invalid parameter/query value.</li>
+                            <li><span class="status-code">404</span>: playlist could not be found. bad id or it is privated.</li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <section class="doc-section" id="data-reference">
+            <h3>data reference</h3>
+
+            <div class="indented">
+                <section>
+                    <p>this api responds with <a href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON">json data</a>, which will follow a steady pattern.</p>
+                
+                    <ul>
+                        <li><code class="variable-name">status</code>: the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status">http response status code</a>, 200 for success.</li>
+                        <li><code class="variable-name">message</code>: a message related to the status.</li>
+                        <li><code class="variable-name">data</code>: if successful, the desired data. missing on fail.</li>
+                    </ul>
+                </section>
+                <section id="album-data-reference">
+                    <h4>album data</h4>
+                    <p>when receiving data for a <a href="#track-data-reference">track</a>, album data is included.</p>
+                    <ul>
+                        <li><code class="variable-name">artwork</code>: image data containing url to the artwork, <a href="#image-data-reference">see here</a>.</li>
+                        <li><code class="variable-name">name</code>: album name.</li>
+                        <li><code class="variable-name">releaseDate</code>: thealbum's release date.</li>
+                        <li><code class="variable-name">trackCount</code>: total number of tracks on the album.</li>
+                    </ul>
+                </section>
+                <section id="artists-data-reference">
+                    <h4>artist data</h4>
+                    <p>when receiving data for an artist, expect the following fields:</p>
+                    <ul>
+                        <li><code class="variable-name">genres</code>: a list of genres.</li>
+                        <li><code class="variable-name">image</code>: image data containing url to the artwork, <a href="#image-data-reference">see here</a>.</li>
+                        <!-- modify and note the height/width here.... -->
+                        <li><code class="variable-name">name</code>: the artist's name.</li>
+                        <li><code class="variable-name">spotifyURL</code>: link to the artist on spotify.</li>
+                    </ul>
+                </section>
+                <section id="image-data-reference">
+                    <h4>image data</h4>
+                    <p>albums and artists have data for an image with the following fields:</p>
+                    <ul>
+                        <li><code class="variable-name">height</code>: image height in pixels.</li>
+                        <li><code class="variable-name">url</code>: url to the image.</li>
+                        <li><code class="variable-name">width</code>: image width in pixels.</li>
+                    </ul>
+                </section>
+                <section id="track-data-reference">
+                    <h4>song data</h4>
+                    <p>when receiving data for a track, expect the following fields:</p>
+                    <ul>
+                        <li><code class="variable-name">album</code>: data on the album, <a href="#album-data-reference">see here</a>.</li>
+                        <li>
+                            <code class="variable-name">artists</code>: a list of names of artists credited.
+                            <p class="note"><em>not</em> complete <a href="#artists-data-reference">artist data</a>.</p>
+                        </li>
+                        <li><code class="variable-name">name</code>: the name of the song.</li>
+                        <li><code class="variable-name">spotifyURL</code>: url to the song on spotify.</li>
+                        <li><code class="variable-name">trackNumber</code>: this song's track number on its album.</li>
+                    </ul>
+                </section>
+                <section id="playlist-data-reference">
+                    <h4>playlist data</h4>
+                    <p>when receiving data for a playlist, expect the following fields.</p>
+                    <ul>
+                        <li><code class="variable-name">description</code>: the playlist's description.</li>
+                        <li><code class="variable-name">items</code>: a list of <a href="#track-data-reference">tracks</a> on the playlist.</li>
+                        <li><code class="variable-name">length</code> how many total tracks are on the playlist.</li>
+                        <li><code class="variable-name">name</code>: the playlist's name.</li>
+                        <li><code class="variable-name">spotifyURL</code>: a link to the playlist on spotify.</li>
+                    </ul>
+                    <p class="important">please note that because of spotify's limits, only up to 50 tracks may be retrieved from a playlist in one request. in the future, i will have a way to request further tracks easily, but for now, nope.</p>
+                </section>
+            </div>
+        </section>
+    
+        <section class="doc-section" id="examples">
+            <h2>code examples</h2>
+            <p>finally, for an example, i will link to the music api example use of my javascript freebies.</p>
+        </section>
+
+        <section class="doc-section" id="known-issues">
+            <h2>known issues</h2>
+            <p>this is a very new thing i'm making, i have a lot of internal points of improvement to work on.</p>
+            <p>for you, the user, here is what you should know:</p>
+            <p class="important">please do not register multiple times. this won't cause major issues, but it might be confusing to have multiple id's. i would prefer you don't, but i can't stop you yet.</p>
+        </section>
+
+        <section class="doc-section" id="read-more">
+            <h2>read more</h2>
+            <ul>
+                <li><a href="https://github.com/cryptiddddd/javascript-freebies/">example template</a></li>
+                <li><a href="https://github.com/cryptiddddd/music-proxy-api/">github page</a></li>
+                <li><a href="../index.html">wormboy homepage</a></li>
+            </ul>
+        </section>
+    </main>
+</body>
+</html>

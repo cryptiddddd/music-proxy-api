@@ -10,7 +10,7 @@ interface MyResponse {
 interface SpotifyTokens {
     accessToken: string;
     refreshToken: string;
-    id?: string;
+    id?: string; // optional, explicitly added if/when needed.
 }
 
 

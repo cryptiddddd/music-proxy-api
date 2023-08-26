@@ -1,0 +1,237 @@
+/* 
+css for the music api page :]!
+*/
+
+:root {
+    --body-bg: url(../images/paper.jpg);
+    --font-color: #000;
+
+    --section-bg: #fffa;
+
+    --code-font: 'Source Code Pro', Courier, monospace;
+
+    --primary-color: #435be4;
+    --secondary-color: #586ad3;
+    
+    --accent-color: #ee2471;
+    --accent-hover: #ff44c1;
+    --accent-visited: #d4106c;
+    --lighter-accent: #f893c6;
+
+    --accent-transparent: #e77bba5d;
+
+    --transparent-line: 1px solid color-mix(in srgb-linear, var(--font-color) 15%, transparent);
+    --border-radius: 5px;
+}
+
+body {
+    background: var(--body-bg);
+    background-attachment: fixed;
+    color: var(--font-color);
+    font-family: 'Ubuntu Mono', monospace;
+
+    /* layout */
+    min-height: 100vh;
+    margin: 0;
+}
+
+::selection, ::-moz-selection {
+    background-color: color-mix(in srgb-linear, var(--accent-color) 50%, transparent);
+}
+
+marquee {
+    /* style */
+    font-weight: bold;
+}
+
+
+/* main section layout */
+main.container {
+    /* layout */
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 2em;
+    margin: auto;
+    padding: 2em;    
+    width: 80%;
+
+    /* color */
+    background-color: var(--section-bg);
+    background-blend-mode: multiply;
+}
+
+div.indented {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 2em;
+}
+
+
+/* endpoint reference styling */
+.method {
+    text-transform: uppercase;
+}
+
+.endpoint-url {
+    color: var(--lighter-accent);
+    font-style: italic;
+    text-decoration: underline;
+}
+
+.default-value {
+    margin-top: 1ex;
+    padding: 4px 6px;
+    width: fit-content;
+}
+
+.default-value::before {
+    content: "default value:";
+    margin-right: 10px;
+}
+
+
+.status-code {
+    text-decoration: underline;
+}
+
+
+/* object reference styles */
+
+
+p.note {
+    border-left: 3px var(--font-color) double;
+    margin-left: 3em;
+    padding-left: 3ex;
+}
+
+p.important {
+    background: var(--accent-transparent);
+    border-radius: var(--border-radius);
+    margin: 1em auto;
+    outline: 3px var(--font-color) double;
+    padding: 1em;
+    text-align: center;
+    width: 70%;
+}
+
+p.caption {
+    color: var(--primary-color);
+    margin-top: 0;
+    text-align: center;
+}
+
+/* image styles */
+img#auth-flow-diagram {
+    background: var(--accent-transparent);
+    border-radius: var(--border-radius);
+    display: block;
+    margin: 1.5em auto;
+    max-width: 80%;
+    padding: 5px;
+    image-rendering: crisp-edges;
+}
+
+/* code section stylings */
+pre {
+    margin: auto;
+    padding: 1em;
+    width: 75%;
+}
+
+code.hljs {
+    border-radius: var(--border-radius);
+}
+
+
+/* mobile layout */
+@media (max-width: 960px) {
+    main.container {
+        gap: 1em;
+        width: unset;
+    }
+
+    p.note {
+        margin-left: 1.5em;
+    }
+
+    pre {
+        width: 100%;
+    }
+}
+
+
+/* text styles */
+h1 {
+    font-size: 2.5em;
+}
+
+h2 {
+    font-size: 2em;
+}
+
+h3 {
+    color: var(--secondary-color);
+    font-size: 1.75em;
+}
+
+h4 {
+    font-size: 1.5em;
+}
+
+h6 {
+    font-size: 1.2em;
+    margin: 15px 0 5px;
+}
+
+h2, h3, h4, h5 {
+    margin-bottom: 0;
+}
+
+li {
+    margin: 4px 0;
+}
+
+.endpoint h4::before {
+    color: var(--primary-color);
+    content: " \266A";
+    margin-right: 1.5ch;
+}
+
+a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+a:hover, a:visited:hover {
+    color: var(--accent-hover);
+    text-transform: uppercase;
+}
+
+a:visited {
+    color: var(--accent-visited);
+}
+
+nav a {
+    text-decoration: none;
+}
+
+nav a:visited {
+    color: var(--accent-color);
+}
+
+code {
+    background-color: white;
+    border-radius: var(--border-radius);
+    color: var(--secondary-color);
+    font-family: var(--code-font);
+    font-size: 14px;
+    padding: 3px 5px;
+}
+
+.variable-name {
+    color: var(--accent-color);
+}
+
+ul {
+    margin: 0;
+}

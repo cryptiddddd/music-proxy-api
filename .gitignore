@@ -13,4 +13,3 @@ tsconfig.json
 
 api-tests/
 .dev.vars
-variables.sh

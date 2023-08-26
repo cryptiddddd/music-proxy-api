@@ -11,7 +11,7 @@ import { refreshProxy } from "./refresh";
 
 import { badRequestResponse, invalidIdResponse, notFoundResponse, unauthorized } from "./errors";
 import { formatArtist, formatPlaylist, formatTrack } from "./formatData";
-import { responseConstructor, validateNumberArgument, validateStringArgument } from "./utils";
+import { jsonResponse, validateNumberArgument, validateStringArgument } from "./utils";
 
 
 // specifying request properties.
@@ -138,7 +138,7 @@ router.get("/api/:id/top/:type", async (request: TrueRequest, env: Env, ctx: Exe
 	// format and return
 	let formatFunc = request.params.type == "artists"? formatArtist : formatTrack;
 	
-	return responseConstructor({
+	return jsonResponse({
 		status: 200,
 		message: "success, see 'data'",
 		data: {
@@ -178,7 +178,7 @@ router.get("/api/:id/recently_played", async (request: TrueRequest, env: Env, co
 	);
 
 	// format the data.
-	return responseConstructor({
+	return jsonResponse({
 		status: 200,
 		message: "success, see 'data'",
 		data: {
@@ -221,15 +221,15 @@ router.get("/api/playlist/:playlistID", async (request: TrueRequest, env: Env, c
 	} catch (err) {
 		return notFoundResponse("playlist");
 	}
-	return responseConstructor(formatPlaylist(rawData));
+	return jsonResponse(formatPlaylist(rawData));
 });
 
 
 // 404 not found -- important this goes last
 router.all("*", () => {
-	return responseConstructor({
+	return jsonResponse({
 		status: 404,
-		message: "invalid page address or request method. see '/docs' for documentation." // todo: link documentation.
+		message: "invalid page address or request method." // todo: link documentation.
 	});
 });
 

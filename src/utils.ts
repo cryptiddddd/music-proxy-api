@@ -126,7 +126,7 @@ async function spotifyTokenRequest(SPOTIFY_ID: string, SPOTIFY_SECRET: string, b
  * json response constructor that includes the needed cors header.
  * @param content json content object
  */
-function responseConstructor(jsonData: any): Response {
+function jsonResponse(jsonData: any): Response {
     let response = Response.json(jsonData);
     response.headers.append("Access-Control-Allow-Origin", "*");
     
@@ -140,5 +140,5 @@ export {
     spotifyTokenRequest,
     validateNumberArgument,
     validateStringArgument,
-    responseConstructor
+    jsonResponse
 }

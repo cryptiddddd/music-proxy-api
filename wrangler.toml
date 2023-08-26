@@ -3,3 +3,7 @@ main = "src/router.ts"
 compatibility_date = "2023-08-07"
 
 compatibility_flags = [ "nodejs_compat" ]
+
+[site]
+bucket = "./static"
+exclude = ["./docs"]
