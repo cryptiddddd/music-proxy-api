@@ -2,9 +2,15 @@
  * this file takes all of spotify's data and cleans it up for both security and convenience.
  */
 
+interface ImageData {
+    height: number;
+    url: string;
+    width: number;
+}
+
 interface ArtistData {
     genres: string[]; // list of all their listed genres.
-    imageURL: string; // url to their cover image, the largest one. oops!
+    image: ImageData; // url to their cover image, the largest one. oops!
     name: string;
     spotifyURL: string; // url to the artist's spotify page.
 }
@@ -17,7 +23,7 @@ interface ArtistData {
 function formatArtist(data: any): ArtistData {
     return {
         genres: data.genres,
-        imageURL: data.images[0],
+        image: data.images[0],
         name: data.name,
         spotifyURL: data.external_urls.spotify
     }
@@ -25,7 +31,7 @@ function formatArtist(data: any): ArtistData {
 
 
 interface AlbumData {
-    artwork: string; // url to 640px album art
+    artwork: ImageData; // url to 640px album art
     name: string;
     releaseDate: string; // album's release date
     trackCount: number; // how many tracks total
