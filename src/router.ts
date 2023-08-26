@@ -11,15 +11,16 @@ import { refreshProxy } from "./refresh";
 
 import { badRequestResponse, invalidIdResponse, notFoundResponse, unauthorized } from "./errors";
 import { formatArtist, formatPlaylist, formatTrack } from "./formatData";
-import { validateNumberArgument, validateStringArgument } from "./utils";
+import { responseConstructor, validateNumberArgument, validateStringArgument } from "./utils";
 
 
-// expected environment.
+// specifying request properties.
 interface TrueRequest extends Request {
 	params: any;
 	query: any;
 }
 
+// expected environment.
 interface Env {
 	SPOTIFY_ID: string;
 	SPOTIFY_SECRET: string;
@@ -36,13 +37,13 @@ router.get("/", (request: TrueRequest, env: Env, ctx: ExecutionContext) => {
 
 	return Response.json({
 		status: 200,
-		message: "welcome to wormboy 3's music api. there is nothing here on this root page! for documentation, see '/docs'."
+		message: "welcome to wormboy 3's music proxy api. there is nothing here on this root page! for documentation, see '/docs'."
 	});
 });
 
 router.get("/docs", () => {
 	// redirect to documentation on wormboy3
-	return Response.redirect("https://wormboy3.neocities.org/docs/music-api"); 
+	return Response.redirect("https://wormboy3.neocities.org/docs/music-proxy"); 
 });
 
 router.get("/privacy-policy", () => {
@@ -136,7 +137,8 @@ router.get("/api/:id/top/:type", async (request: TrueRequest, env: Env, ctx: Exe
 
 	// format and return
 	let formatFunc = request.params.type == "artists"? formatArtist : formatTrack;
-	return Response.json({
+	
+	return responseConstructor({
 		status: 200,
 		message: "success, see 'data'",
 		data: {
@@ -176,7 +178,7 @@ router.get("/api/:id/recently_played", async (request: TrueRequest, env: Env, co
 	);
 
 	// format the data.
-	return Response.json({
+	return responseConstructor({
 		status: 200,
 		message: "success, see 'data'",
 		data: {
@@ -219,18 +221,17 @@ router.get("/api/playlist/:playlistID", async (request: TrueRequest, env: Env, c
 	} catch (err) {
 		return notFoundResponse("playlist");
 	}
-	return Response.json(formatPlaylist(rawData));
+	return responseConstructor(formatPlaylist(rawData));
 });
 
 
 // 404 not found -- important this goes last
 router.all("*", () => {
-	return Response.json({
+	return responseConstructor({
 		status: 404,
 		message: "invalid page address or request method. see '/docs' for documentation." // todo: link documentation.
 	});
 });
-
 
 // i believe that this exports the router's handler under the name "fetch"?
 export default {

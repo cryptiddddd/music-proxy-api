@@ -4,6 +4,7 @@
  * current dir:
  *      - validation
  *      - http request shortcuts.
+ *      - response constructor
  */
 
 import { Buffer } from 'node:buffer';
@@ -119,10 +120,25 @@ async function spotifyTokenRequest(SPOTIFY_ID: string, SPOTIFY_SECRET: string, b
 }
 
 
+// RESPONSE CONSTRUCTOR //////////////////////
+
+/**
+ * json response constructor that includes the needed cors header.
+ * @param content json content object
+ */
+function responseConstructor(jsonData: any): Response {
+    let response = Response.json(jsonData);
+    response.headers.append("Access-Control-Allow-Origin", "*");
+    
+    return response;
+}
+
+
 export {
     mongoRequest,
     spotifyApiRequest,
     spotifyTokenRequest,
     validateNumberArgument,
-    validateStringArgument
+    validateStringArgument,
+    responseConstructor
 }

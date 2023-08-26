@@ -32,7 +32,7 @@ interface AlbumData {
 }
 
 interface TrackData {
-    album: AlbumData; // name of the albm
+    album: AlbumData; // data on the album
     artists: string[]; // list of names of artists
     name: string; // name of the song
     spotifyURL: string; // url to the song
