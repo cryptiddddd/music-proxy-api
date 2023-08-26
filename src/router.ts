@@ -221,7 +221,11 @@ router.get("/api/playlist/:playlistID", async (request: TrueRequest, env: Env, c
 	} catch (err) {
 		return notFoundResponse("playlist");
 	}
-	return jsonResponse(formatPlaylist(rawData));
+	return jsonResponse({
+		"status": 200,
+		"message": "success, see 'data'.",
+		"data": formatPlaylist(rawData)
+	});
 });
 
 
