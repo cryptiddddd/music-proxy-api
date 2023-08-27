@@ -32,19 +32,16 @@ const router = Router();
 
 
 // GENERAL //////////////////////
-router.get("/", (request: TrueRequest, env: Env, ctx: ExecutionContext) => {
-	console.log(request.url);
+router.get("/", () => {
+	let body = "welcome to wormboy 3's music proxy api. there is nothing here on this root page!\n\nsee https://music.wormboy-api.workers.dev/docs for documentation.\n\nsee https://music.wormboy-api.workers.dev/privacy-policy for my privacy policy.\n\nthis service is in progress, and registration is not currently available.";
 
-	return Response.json({
-		status: 200,
-		message: "welcome to wormboy 3's music proxy api. there is nothing here on this root page! documentation coming soon..."
-	});
+	return new Response(body, {headers: {"content-type": "text/plain"}});
 });
 
-// router.get("/docs", () => {
-// 	// redirect to documentation on wormboy3
-// 	return Response.redirect("https://wormboy3.neocities.org/docs/music-proxy"); 
-// });
+router.get("/docs", () => {
+	// redirect to documentation, wherever that may be...
+	return Response.redirect("https://github.com/cryptiddddd/music-proxy-api"); 
+});
 
 router.get("/privacy-policy", () => {
 	let body = "wormboy's music api collects no personal information. wormboy does not care about your personal information. there is a database that stores anonymous tokens to access your spotify account, associated only with the date and time of your registration, and the randomized id you receive upon registration confirmation.\n\nthis api will never ask permission or attempt to create or edit spotify account data [playlists, account safety, everything in between]; it is exclusively a means to read data, and will remain that way. that said: use at your own risk, as anyone with your user id can view your recently played tracks, and top artists/tracks.";
@@ -54,10 +51,10 @@ router.get("/privacy-policy", () => {
 
 
 // USER MANAGEMENT //////////////////////
-router.get("/register", async (request: TrueRequest, env: Env, ctx: ExecutionContext) => {
-	let redirectURI = request.url.replace("/register", "/callback");
-	return authenticateUser(env.SPOTIFY_ID, redirectURI);
-});
+// router.get("/register", async (request: TrueRequest, env: Env, ctx: ExecutionContext) => {
+// 	let redirectURI = request.url.replace("/register", "/callback");
+// 	return authenticateUser(env.SPOTIFY_ID, redirectURI);
+// });
 
 
 router.get("/callback", async (request: TrueRequest, env: Env, ctx: ExecutionContext) => {
@@ -230,12 +227,16 @@ router.get("/api/playlist/:playlistID", async (request: TrueRequest, env: Env, c
 
 
 // 404 not found -- important this goes last
-router.all("*", () => {
+router.all("/api/*", () => {
 	return jsonResponse({
 		status: 404,
 		message: "invalid page address or request method." // todo: link documentation.
 	});
 });
+
+router.all("*", () => {
+	return new Response("page not found!", {headers: {"content-type": "text/plain"}});
+})
 
 // i believe that this exports the router's handler under the name "fetch"?
 export default {
