@@ -1,18 +1,33 @@
-# wormboy's music api
+# wormboy's music proxy
 
 > a spotify api intended for use on neocities and other static site hosts.
 
 read-only access to generic song data.
 
-a user must have a spotify account to use this service. they may register at "/register", and authenticate with spotify. then they may use my various endpoints !
 
-documentation in progress... working on user-friendly docs.
+## documentation directory
 
-## notes to self
+- [setup](docs/setup.md)
+- [endpoint reference](docs/endpoints.md)
+- [data structures](docs/data-structures.md)
 
-iiii think that my routing is great! i like the organization. i'm gonna add the lyric stuff later. but right now, i have a couple notes:
-- i need to be transparent about the flaws here and how i may in fact not be prepared for everything.
-- i want a more uniform way of intercepting and handling errors! is there a universal error handler i could come up with??
-- all the spotify api calls so far are pretty uniform [validate parameters, grab user access key, call the specific function, and then format the data.]
-    - how could i generalize or streamline this process? spotify's parameters tend to be pretty cookie-cutter, there's a consistency to them between name and valid values...
-    - is this something that i could redesign to be object-oriented, now that i understand more about the authentication flow?
+other:
+- [privacy policy](https://music.wormboy-api.workers.dev/privacy-policy)
+- [wormboy's site](https://wormboy3.neocities.org/)
+- [example code](https://github.com/cryptiddddd/javascript-freebies)
+
+
+## what is it?
+
+wormboy's music proxy is a [restful api](https://www.techtarget.com/searchapparchitecture/definition/RESTful-API) intended for use in client-facing applications (for example, static websites such as neocities). it provides the user with raw [JSON-formatted](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON#json_structure) data, which they may format as they like.
+
+[ examples here... ]
+
+in short, it is similar to volt.fm, only with less statistical analysis and more customizability!
+
+
+## known issues
+
+> ! registration is currently unavailable.
+
+- internally i plan to rewrite a couple things, hopefully leading to more consistent error handling.
