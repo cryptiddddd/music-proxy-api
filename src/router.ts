@@ -11,7 +11,7 @@ import { refreshProxy } from "./refresh";
 
 import { badRequestResponse, invalidIdResponse, notFoundResponse, unauthorized } from "./errors";
 import { formatArtist, formatPlaylist, formatTrack } from "./formatData";
-import { jsonResponse, validateNumberArgument, validateStringArgument } from "./utils";
+import { jsonResponse, plainTextResponse, validateNumberArgument, validateStringArgument } from "./utils";
 
 
 // specifying request properties.
@@ -33,9 +33,8 @@ const router = Router();
 
 // GENERAL //////////////////////
 router.get("/", () => {
-	let body = "welcome to wormboy 3's music proxy api. there is nothing here on this root page!\n\nsee https://music.wormboy-api.workers.dev/docs for documentation.\n\nsee https://music.wormboy-api.workers.dev/privacy-policy for my privacy policy.\n\nthis service is in progress, and registration is not currently available.";
 
-	return new Response(body, {headers: {"content-type": "text/plain"}});
+	return plainTextResponse("welcome to wormboy 3's music proxy api. there is nothing here on this root page!\n\nsee https://music.wormboy-api.workers.dev/docs for documentation.\n\nsee https://music.wormboy-api.workers.dev/privacy-policy for my privacy policy.\n\nthis service is in progress, and registration is not currently available.");
 });
 
 router.get("/docs", () => {
@@ -44,9 +43,7 @@ router.get("/docs", () => {
 });
 
 router.get("/privacy-policy", () => {
-	let body = "wormboy's music api collects no personal information. wormboy does not care about your personal information. there is a database that stores anonymous tokens to access your spotify account, associated only with the date and time of your registration, and the randomized id you receive upon registration confirmation.\n\nthis api will never ask permission or attempt to create or edit spotify account data [playlists, account safety, everything in between]; it is exclusively a means to read data, and will remain that way. that said: use at your own risk, as anyone with your user id can view your recently played tracks, and top artists/tracks.";
-
-	return new Response(body, {headers: {"content-type": "text/plain"}})
+	return plainTextResponse("wormboy's music api collects no personal information. wormboy does not care about your personal information. there is a database that stores anonymous tokens to access your spotify account, associated only with the date and time of your registration, and the randomized id you receive upon registration confirmation.\n\nthis api will never ask permission or attempt to create or edit spotify account data [playlists, account safety, everything in between]; it is exclusively a means to read data, and will remain that way. that said: use at your own risk, as anyone with your user id can view your recently played tracks, and top artists/tracks.");
 });
 
 
@@ -230,12 +227,12 @@ router.get("/api/playlist/:playlistID", async (request: TrueRequest, env: Env, c
 router.all("/api/*", () => {
 	return jsonResponse({
 		status: 404,
-		message: "invalid page address or request method." // todo: link documentation.
+		message: "invalid page address or request method."
 	});
 });
 
 router.all("*", () => {
-	return new Response("page not found!", {headers: {"content-type": "text/plain"}});
+	return plainTextResponse("page not found!", 404);
 })
 
 // i believe that this exports the router's handler under the name "fetch"?

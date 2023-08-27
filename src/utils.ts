@@ -120,22 +120,41 @@ async function spotifyTokenRequest(SPOTIFY_ID: string, SPOTIFY_SECRET: string, b
 }
 
 
-// RESPONSE CONSTRUCTOR //////////////////////
+// RESPONSE CONSTRUCTORS //////////////////////
 
 /**
- * json response constructor that includes the needed cors header.
- * @param content json content object
+ * json response constructor that includes the needed cors header, and correct status.
+ * @param content json content object.
  */
 function jsonResponse(jsonData: any): Response {
-    let response = Response.json(jsonData);
-    response.headers.append("Access-Control-Allow-Origin", "*");
+    let response = Response.json(jsonData, 
+        {
+            headers: {
+            "Access-Control-Allow-Origin": "*",
+             "Content-Type": "application/json"
+            }, 
+            status: jsonData.status
+        }
+    );
     
     return response;
 }
 
 
+/**
+ * plaintext response constructor.
+ * @param body body text
+ * @param status status, default 200
+ * @returns a plaintext response with the appropriate headers and status.
+ */
+function plainTextResponse(body: string, status: number = 200): Response {
+	return new Response(body, {headers: {"content-type": "text/plain"}, status: status});
+}
+
+
 export {
     mongoRequest,
+    plainTextResponse,
     spotifyApiRequest,
     spotifyTokenRequest,
     validateNumberArgument,
