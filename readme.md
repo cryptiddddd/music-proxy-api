@@ -1,5 +1,7 @@
 # wormboy's music proxy
 
+![signature](https://img.shields.io/badge/crane%20did%20this-926cd4?style=for-the-badge)
+
 > a spotify api intended for use on neocities and other static site hosts.
 
 read-only access to generic song data.
