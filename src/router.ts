@@ -26,15 +26,25 @@ interface Env {
 	SPOTIFY_SECRET: string;
 	MONGO_API_KEY: string;
 	MY_ID: string;
+	STATIC: string;
 }
 
 const router = Router();
 
 
 // GENERAL //////////////////////
-router.get("/", () => {
+router.get("/", async (request, env, ctx) => {
 
-	return plainTextResponse("welcome to wormboy 3's music proxy api. there is nothing here on this root page!\n\nsee https://music.wormboy-api.workers.dev/docs for documentation.\n\nsee https://music.wormboy-api.workers.dev/privacy-policy for my privacy policy.\n\nthis service is in progress, and registration is not currently available.");
+	// return plainTextResponse("welcome to wormboy 3's music proxy api. there is nothing here on this root page!\n\nsee https://music.wormboy-api.workers.dev/docs for documentation.\n\nsee https://music.wormboy-api.workers.dev/privacy-policy for my privacy policy.\n\nthis service is in progress, and registration is not currently available.");
+
+	let body = await env.STATIC.get("index.9c79b964d2.html", {type: "text"});
+	console.log(body);
+
+	return new Response(body, {
+		headers: {
+			"content-type": "text/html;charset=utf-8;"
+		}
+	})
 });
 
 router.get("/docs", () => {
@@ -48,15 +58,15 @@ router.get("/privacy-policy", () => {
 
 
 // USER MANAGEMENT //////////////////////
-// router.get("/register", async (request: TrueRequest, env: Env, ctx: ExecutionContext) => {
-// 	let redirectURI = request.url.replace("/register", "/callback");
-// 	return authenticateUser(env.SPOTIFY_ID, redirectURI);
-// });
+router.get("/register", async (request: TrueRequest, env: Env, ctx: ExecutionContext) => {
+	let redirectURI = request.url.replace("/register", "/callback");
+	return authenticateUser(env.SPOTIFY_ID, redirectURI);
+});
 
 
 router.get("/callback", async (request: TrueRequest, env: Env, ctx: ExecutionContext) => {
 	// check for success.
-	if ("error" in request.query) { return unauthorized(); }
+	if ("error" in request.query) { return plainTextResponse("registration failed, authorization not granted.", 401); }
 
 	// successful: use refresh token to fetch access token
 	let reRedirectURI = request.url.replace(/\/callback.*/, "/callback"); // get the same redirect
@@ -72,12 +82,9 @@ router.get("/callback", async (request: TrueRequest, env: Env, ctx: ExecutionCon
 });
 
 router.get("/registration_confirmation", (request: TrueRequest, env: Env, ctx: ExecutionContext) => {
-	// note: this just displays whatever the value "id" is set to.
-	return Response.json({
-		status: 200,
-		message: "authorized. see data for your new id.",
-		data: {id: request.query.id}
-	});
+	return plainTextResponse(
+		`successfully authorized!\n\nyour USER ID is: '${request.query.id}'\n\ndo not lose this.\n\nsee https://music.wormboy-api.workers.dev/docs for documentation and example code`
+	);
 });
 
 
