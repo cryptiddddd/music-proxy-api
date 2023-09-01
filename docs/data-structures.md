@@ -1,91 +1,91 @@
-# data structure reference
+# Data Structure Reference
 
-- [spotify models](#spotify-data-models)
-    - [album data](#album-data)
-    - [artist data](#artist-data)
-    - [image data](#image-data)
-    - [song data](#song-data)
-    - [playlist data](#playlist-data)
+- [Spotify models](#spotify-data-models)
+    - [Album data](#album-data)
+    - [Artist data](#artist-data)
+    - [Image data](#image-data)
+    - [Song data](#song-data)
+    - [Playlist data](#playlist-data)
 
-this api responds with json data, which will follow a steady pattern.
+This API responds with JSON data, which will follow a steady schema.
 
-| property name    | data type         | description                       | 
+| Property Name    | Data Type         | Description                       | 
 |------------------|-------------------|-----------------------------------|
-| `status`         | number            | the http response status code, 200 for success.
-| `message`        | string            | a message related to the status.
-| `data`           | object            | if successful, the desired data. this is missing on fail.
+| `status`         | number            | The HTTP response status code, 200 for success.
+| `message`        | string            | A message related to the status.
+| `data`           | object            | If successful, the desired data. This is missing on fail.
 
-i advise checking for a 200 status and logging any non-200 status to console for debugging.
+I advise checking for a 200 status and logging any non-200 status to console for debugging.
 
-> learn more about working with json data [here](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON#json_structure).
+> Learn more about working with JSON data [here](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON#json_structure).
 
 
-## spotify data models
+## Spotify Data Models
 
-the following are the expected structures for data fetched from spotify.
+The following are the expected structures for data fetched from spotify.
 
-### album data
+### Album Data
 
-when receiving data for a track, album data is included.
+When receiving data for a track, album data is included.
 
-| property name    | data type         | description                       | 
+| Property Name    | Data Type         | Description                       | 
 |------------------|-------------------|-----------------------------------|
-| `artwork`        | object            | [image data](#image-data) containing url to the artwork.
-| `name`           | string            | album name.
-| `releaseDate`    | string            | the album's release date.
-| `trackCount`     | number            | total number of tracks on the album.
+| `artwork`        | object            | [Image data](#image-data) containing url to the artwork.
+| `name`           | string            | Album name.
+| `releaseDate`    | string            | The album's release date.
+| `trackCount`     | number            | Total number of tracks on the album.
 
 
-### artist data
+### Artist Data
 
-when receiving data for an artist, expect the following fields:
+When receiving data for an artist, expect the following fields:
 
-| property name    | data type         | description                       | 
+| Property Name    | Data Type         | Description                       | 
 |------------------|-------------------|-----------------------------------|
-| `genres`         | string[]          | a list of genres.
-| `image`          | object            | image data containing url to the artwork, see here.
-| `name`           | string            | the artist's name.
-| `spotifyURL`     | string            | link to the artist on spotify.
+| `genres`         | string[]          | A list of genres.
+| `image`          | object            | Image data containing url to the artwork, see here.
+| `name`           | string            | The artist's name.
+| `spotifyURL`     | string            | Link to the artist on spotify.
 
 
-### image data
+### Image Data
 
-albums and artists have data for an image with the following fields:
+Albums and artists have data for an image with the following fields:
 
-| property name    | data type         | description                       | 
+| Property Name    | Data Type         | Description                       | 
 |------------------|-------------------|-----------------------------------|
-| `height`         | number            | image height in pixels.
-| `url`            | string            | url to the image.
-| `width`          | number            | image width in pixels.
+| `height`         | number            | Image height in pixels.
+| `url`            | string            | Url to the image.
+| `width`          | number            | Image width in pixels.
 
 
-### song data
+### Song Data
 
-when receiving data for a track, expect the following fields:
+When receiving data for a track, expect the following fields:
 
-| property name    | data type         | description                       | 
+| Property Name    | Data Type         | Description                       | 
 |------------------|-------------------|-----------------------------------|
-| `album`          | string            | data on the album, see here.
-| `artists`        | string            | a list of names of artists credited.*
-| `name`           | string            | the name of the song.
-| `spotifyURL`     | string            | url to the song on spotify.
-| `trackNumber`    | number            | this song's track number on its album.
+| `album`          | string            | Data on the album, see here.
+| `artists`        | string[]          | A list of names of artists credited.*
+| `name`           | string            | The name of the song.
+| `spotifyURL`     | string            | Url to the song on spotify.
+| `trackNumber`    | number            | This song's track number on its album.
 
-> \* please note: these are names only, not complete artist data objects.
+> \* Please note: these are names only, not complete artist data objects.
 
-### playlist data
+### Playlist Data
 
-when receiving data for a playlist, expect the following fields.
+When receiving data for a playlist, expect the following fields.
 
-| property name    | data type         | description                       | 
+| Property Name    | Data Type         | Description                       | 
 |------------------|-------------------|-----------------------------------|
-| `description`    | string            | the playlist's description.
-| `items`          | object[]          | a list of [song data](#song-data) for tracks on the playlist.
-| `length`         | number            | number of total tracks on the playlist.
-| `name`           | string            | the playlist's name.
-| `spotifyURL`     | string            | a link to the playlist on spotify.
+| `description`    | string            | The playlist's description.
+| `items`          | object[]          | A list of [song data](#song-data) for tracks on the playlist.
+| `length`         | number            | Number of total tracks on the playlist.
+| `name`           | string            | The playlist's name.
+| `spotifyURL`     | string            | A link to the playlist on spotify.
 
-> because of spotify's limits, only up to 50 tracks may be retrieved from a playlist in one request. in the future, i will have a way to request further tracks easily, but for now, nope.
+> Because of spotify's limits, only up to 50 tracks may be retrieved from a playlist in one request. In the future, I will have a way to request further tracks easily.
 
 
-## more endpoints coming...
+## More Endpoints Coming...

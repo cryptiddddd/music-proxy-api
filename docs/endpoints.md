@@ -1,68 +1,74 @@
-# endpoint reference
+# Endpoint Reference
 
-this document discusses api endpoints intended to deliver data to the user. this document does not include registration or other [???] endpoints. 
+This document discusses API endpoints intended to deliver data to the user. This document does not include registration or other non-data endpoints. 
 
 
 ## `/api/`
 
-within the `/api/` section are the following endpoints, sorted by category:
+Within the `/api/` section are the following endpoints, sorted by category:
 
-- spotify
+- [Spotify Endpoints](#spotify-endpoints)
     - `/api/{userID}/top/{type}`
     - `/api/{userID}/recently_played`
     - `/api/playlist/{playlistID}`
 
-each endpoint has *required* parameters, marked in curly braces.
+Each endpoint has required *parameters*, marked in curly braces.
 
-most endpoints have queries -- optional specifications. queries may be added to the end of the url as a [query string](https://en.wikipedia.org/wiki/Query_string).
-
-
-### spotify endpoints
-
-spotify endpoints *may* have the following queries:
-
-1. **`limit`** -- the maximum number of items to retrieve.
-
-    for example, when retrieving a playlist, you may set `limit` to `13` in order to retrieve 13 or less tracks from the playlist.
-
-    the minimum is `0`, the maximum is `50`. if unspecified, the default is `10`.
+Most endpoints have *queries* -- optional specifications. Queries follow consistent rules across each category. Queries may be added to the end of the url as a [query string](https://en.wikipedia.org/wiki/Query_string). 
 
 
-2. **`time_range`** -- the period of time to gather data on. there are three valid values:
+### Spotify Endpoints
 
-    | value          | description                         |
++ `/api/{userID}/top/{type}`: Fetch the user's topmost artists or tracks.
++ `/api/{userID}/recently_played`: Fetch the user's most recently played tracks.
++ `/api/playlist/{playlistID}`: Fetch a public playlist.
+
+#### Queries 
+
+Spotify endpoints *may* have the following queries:
+
+1. **`limit`** -- The maximum number of items to retrieve.
+
+    For example, when retrieving a playlist, you may set `limit` to `13` in order to retrieve 13 or less (if the playlist is not long enough) tracks from the playlist.
+
+    The minimum valid value is `0`, the maximum is `50`. If unspecified, the default is `10`.
+
+
+2. **`time_range`** -- The period of time to gather data on. There are three valid values:
+
+    | Value          | Description                         |
     |----------------|-------------------------------------|
-    | `short_term`   | within the past 4 weeks.
-    | `medium_term`  | within the past 6 months.
-    | `long_term`    | within the past couple years.
+    | `short_term`   | Within the past 4 weeks.
+    | `medium_term`  | Within the past 6 months.
+    | `long_term`    | Within the past couple years.
 
-    if unspecified, the default is `medium_term`.
+    If unspecified, the default is `medium_term`.
 
 
 #### GET `/api/{userID}/top/{type}`
 
-gets your top artists or tracks on spotify. 
+Gets your top artists or tracks on spotify. 
 
-**parameters:**
-| name | valid values   | description |
+**Parameters:**
+| Name | Valid values   | Description |
 |----|:-:|--------|
 | `userID` | * | your unique user id received upon registration.
 |`type`  | `tracks` or `artists` | which type of item data to receive.
 
-**available queries:**
+**Available queries:**
 - `limit`
 - `time_range`
 
-**responses:**
+**Responses:**
 
-| status code    | success? | cause     | 
+| Status code    | Success? | Cause     | 
 |---------------:|:--------:|-----------|
-| 200 | ✔ | data retrieved successfully.
-| 400 | ✖ | invalid parameter/query.
-| 401 | ✖ | unrecognized user ID.
+| 200 | ✔ | Data retrieved successfully.
+| 400 | ✖ | Invalid parameter/query.
+| 401 | ✖ | Unrecognized user ID.
 
-on success, data is organized like so:
-```json
+On success, data is organized like so:
+```JSON
 {
     "status": 200,
     "message": "success",
@@ -74,32 +80,32 @@ on success, data is organized like so:
 }
 ```
 
-where the contents of `items` is an array of [track or artist data](./data-structures.md#artist-data).
+Where the contents of `items` is an array of [track or artist data](./data-structures.md#artist-data).
 
 
 #### GET `/api/{userID}/recently-played`
 
-gets your most recently played tracks from spotify. 
+Gets your most recently played tracks from spotify. 
 
 
-**parameters:**
-| name | valid values   | description |
-|----|:-:|--------|
-| `userID` | * | your unique user id received upon registration.
+**Parameters:**
+| Name     | Valid values   | Description |
+|----------|:--------------:|-------------|
+| `userID` | *              | Your unique user id received upon registration.
 
-**available queries:**
+**Available queries:**
 - `limit`
 
-**responses:**
+**Responses:**
 
-| status code    | success? | cause     | 
+| Status code    | Success? | Cause     | 
 |---------------:|:--------:|-----------|
-| 200 | ✔ | data retrieved successfully.
-| 400 | ✖ | invalid query.
-| 401 | ✖ | unrecognized user ID.
+| 200            | ✔        | Data retrieved successfully.
+| 400            | ✖        | Invalid query.
+| 401            | ✖        | Unrecognized user ID.
 
-on success, data is organized like so:
-```json
+On success, data is organized like so:
+```JSON
 {
     "status": 200,
     "message": "success",
@@ -111,33 +117,33 @@ on success, data is organized like so:
 }
 ```
 
-where the contents of `items` is an array of [track data](./data-structures.md#song-data).
+Where the contents of `items` is an array of [track data](./data-structures.md#song-data).
 
 
 #### GET `/api/playlist/{playlistID}`
 
-gets data on the given *public* playlist and a limited number of tracks from the playlist.
+Gets data on the given *public* playlist and a limited number of tracks from the playlist.
 
-**parameters:**
-| name | valid values   | description |
-|----|:-:|--------|
-| `playlistID` | * | the id to your desired playlist, which must be public.
+**Parameters:**
+| Name         | Valid values | Description |
+|--------------|:------------:|-------------|
+| `playlistID` | *            | The ID to your desired playlist, which must be public.
 
-> [how to get a spotify playlist id?](https://clients.caster.fm/knowledgebase/110/How-to-find-Spotify-playlist-ID.html)
+> [how to get a spotify playlist ID?](https://clients.caster.fm/knowledgebase/110/How-to-find-Spotify-playlist-ID.html)
 
-**available queries:**
+**Available queries:**
 - `limit`
 
-**responses:**
+**Responses:**
 
-| status code    | success? | cause     | 
+| Status code    | Success? | Cause     | 
 |---------------:|:--------:|-----------|
-| 200 | ✔ | data retrieved successfully.
-| 400 | ✖ | invalid query.
-| 404 | ✖ | playlist could not be found.
+| 200            | ✔       | Data retrieved successfully.
+| 400            | ✖       | Invalid query.
+| 404            | ✖       | Playlist could not be found.
 
-on success, data is organized like so:
-```json
+On success, data is organized like so:
+```JSON
 {
     "status": 200,
     "message": "success",
@@ -145,7 +151,7 @@ on success, data is organized like so:
 }
 ```
 
-where the contents of `data` is a [playlist data object](./data-structures.md#playlist-data).
+Where the contents of `data` is a [playlist data object](./data-structures.md#playlist-data).
 
 
-## and more to come...
+## And more to come...
