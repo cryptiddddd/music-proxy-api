@@ -193,7 +193,7 @@ router.get("/api/:id/recently_played", async (request: TrueRequest, env: Env, co
  * gets a playlist by the id. valid queries are limit, 0 - 50.
  * note: this uses my acct, so no private playlists other than my own will work...... maybe fix this but for now? oh well.
  */
-router.get("/api/playlist/:playlistID", async (request: TrueRequest, env: Env, context: ExecutionContext) => {
+router.get("/api/:id/playlist/:playlistID", async (request: TrueRequest, env: Env, context: ExecutionContext) => {
 	let limit;
 	try {
 		limit = validateNumberArgument(request.query, "limit", 0, 50, 10);
@@ -204,11 +204,10 @@ router.get("/api/playlist/:playlistID", async (request: TrueRequest, env: Env, c
 	// get user key
 	let userTokens;
 	try {
-		userTokens = await fetchUserTokens(env.MONGO_API_KEY, env.MY_ID);
+		userTokens = await fetchUserTokens(env.MONGO_API_KEY, request.params.id);
 	} catch (err) {
 		return invalidIdResponse();
 	}
-	userTokens.id = env.MY_ID;
 
 	// GET DATA!!
 	let rawData;

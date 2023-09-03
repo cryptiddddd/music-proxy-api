@@ -84,7 +84,11 @@ async function fetchUserTokens(MONGO_KEY: string, userID: string): Promise<Spoti
         throw {status: userData.status, message: "user data could not be found."};
     }
 
-    return {refreshToken: userData.data.refreshToken, accessToken: userData.data.accessToken};
+    return {
+        refreshToken: userData.data.refreshToken,
+        accessToken: userData.data.accessToken,
+        id: userID
+    };
 }
 
 

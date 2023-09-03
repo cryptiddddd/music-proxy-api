@@ -7,7 +7,7 @@
     - [Song data](#song-data)
     - [Playlist data](#playlist-data)
 
-This API responds with JSON data, which will follow a steady schema.
+This API responds with JSON data, which will follow a steady structure.
 
 | Property Name    | Data Type         | Description                       | 
 |------------------|-------------------|-----------------------------------|
@@ -22,7 +22,7 @@ I advise checking for a 200 status and logging any non-200 status to console for
 
 ## Spotify Data Models
 
-The following are the expected structures for data fetched from spotify.
+The following are the expected structures for data fetched from Spotify. Please note that these structures are not defined by Spotify, but rather refined from the data Spotify provides.
 
 ### Album Data
 

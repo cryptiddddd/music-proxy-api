@@ -7,10 +7,10 @@ This document discusses API endpoints intended to deliver data to the user. This
 
 Within the `/api/` section are the following endpoints, sorted by category:
 
-- [Spotify Endpoints](#spotify-endpoints)
-    - `/api/{userID}/top/{type}`
-    - `/api/{userID}/recently_played`
-    - `/api/playlist/{playlistID}`
+- [Spotify Endpoints](#spotify-endpoints) ``
+    - `/{userID}/top/{type}`
+    - `/{userID}/recently_played`
+    - `/{userID}/playlist/{playlistID}`
 
 Each endpoint has required *parameters*, marked in curly braces.
 
@@ -19,9 +19,9 @@ Most endpoints have *queries* -- optional specifications. Queries follow consist
 
 ### Spotify Endpoints
 
-+ `/api/{userID}/top/{type}`: Fetch the user's topmost artists or tracks.
-+ `/api/{userID}/recently_played`: Fetch the user's most recently played tracks.
-+ `/api/playlist/{playlistID}`: Fetch a public playlist.
++ `/{userID}/top/{type}`: Fetch the user's topmost artists or tracks.
++ `/{userID}/recently_played`: Fetch the user's most recently played tracks.
++ `/{userID}/playlist/{playlistID}`: Fetch a public playlist.
 
 #### Queries 
 
@@ -120,13 +120,14 @@ On success, data is organized like so:
 Where the contents of `items` is an array of [track data](./data-structures.md#song-data).
 
 
-#### GET `/api/playlist/{playlistID}`
+#### GET `/api/{userID}/playlist/{playlistID}`
 
 Gets data on the given *public* playlist and a limited number of tracks from the playlist.
 
 **Parameters:**
 | Name         | Valid values | Description |
 |--------------|:------------:|-------------|
+| `userID`     | *            | Your unique user id received upon registration.
 | `playlistID` | *            | The ID to your desired playlist, which must be public.
 
 > [how to get a spotify playlist ID?](https://clients.caster.fm/knowledgebase/110/How-to-find-Spotify-playlist-ID.html)
