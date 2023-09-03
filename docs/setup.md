@@ -2,8 +2,6 @@
 
 This document talks about how to authorize the service as a user.
 
-> Important note: Spotify authorization is only required for certain endpoints -- those which require "`userID`" as a parameter.
-
 Registration is a simple process that provides the user with a unique ID associated with their Spotify account.
 
 
