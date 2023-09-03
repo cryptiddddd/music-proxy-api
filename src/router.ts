@@ -25,8 +25,6 @@ interface Env {
 	SPOTIFY_ID: string;
 	SPOTIFY_SECRET: string;
 	MONGO_API_KEY: string;
-	MY_ID: string;
-	STATIC: string;
 }
 
 const router = Router();
@@ -34,17 +32,7 @@ const router = Router();
 
 // GENERAL //////////////////////
 router.get("/", async (request, env, ctx) => {
-
-	// return plainTextResponse("welcome to wormboy 3's music proxy api. there is nothing here on this root page!\n\nsee https://music.wormboy-api.workers.dev/docs for documentation.\n\nsee https://music.wormboy-api.workers.dev/privacy-policy for my privacy policy.\n\nthis service is in progress, and registration is not currently available.");
-
-	let body = await env.STATIC.get("index.9c79b964d2.html", {type: "text"});
-	console.log(body);
-
-	return new Response(body, {
-		headers: {
-			"content-type": "text/html;charset=utf-8;"
-		}
-	})
+	return plainTextResponse("welcome to wormboy 3's music proxy api. there is nothing here on this root page!\n\nsee https://music.wormboy-api.workers.dev/docs for documentation.\n\nsee https://music.wormboy-api.workers.dev/privacy-policy for my privacy policy.\n\nthis service is in progress, and registration is not currently available.");
 });
 
 router.get("/docs", () => {
@@ -241,7 +229,7 @@ router.all("*", () => {
 	return plainTextResponse("page not found!", 404);
 })
 
-// i believe that this exports the router's handler under the name "fetch"?
+
 export default {
 	fetch: router.handle,
 };
