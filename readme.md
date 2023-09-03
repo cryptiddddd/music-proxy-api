@@ -18,7 +18,7 @@ Read-only access to generic song data.
 
 ### Related:
 - [Privacy Policy](https://music.wormboy-api.workers.dev/privacy-policy)
-- [Wormboy's Site](https://wormboy3.neocities.org/)
+- [wormboy3 on Neocities](https://wormboy3.neocities.org/)
 - [Example Code](https://github.com/cryptiddddd/javascript-freebies)
 
 
